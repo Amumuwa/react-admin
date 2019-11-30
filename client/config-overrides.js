@@ -13,7 +13,7 @@ module.exports =override (
     // 使用 less-loader 对源码 antd 中的 less 变量重新赋值
     addLessLoader({
         javascriptEnabled: true,
-        modifyVars: { '@primary-color': '#01144A' } // 自定义全局基色（主题）
+        modifyVars: { '@primary-color': '#0099CC' } // 自定义全局基色（主题）
     }),
 
     // 配置路径别名

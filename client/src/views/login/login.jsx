@@ -6,6 +6,8 @@ import logo from 'imgs/GM.png'
 
 import { Form, Icon, Input, Button } from 'antd';
 
+import { reqLogin } from '../../api/index.js'
+
 // const Item = Form.Item  必须写在 import 之后
 
 class Login extends Component {
@@ -17,18 +19,26 @@ class Login extends Component {
         this.props.form.validateFields(
             (err, values) => {
                 if (!err) {
-                    console.log(values)
-                    // 校验通过
+                    // 校验通过 调用登录 API
+                    reqLogin (values).then( ( res ) => {
+                        console.log('登录成功')
+                    }).catch( ( err ) => {
+                        throw new Error('登录失败')
+                    })
+
+                    // 或则 ：
+                    // const { username, password } = values
+                    // reqLogin ( username, password )
                 } else {
                     // 校验失败
                 }
             }
         )
 
-        const form = this.props.form    // form 对象 
+        // const form = this.props.form    // form 对象 
 
         // 获取 Form 中所有 Item 的 value，获取到一个对象，对象的 key 是给 Item 传入的名称
-        const formValues = form.getFieldsValue()
+        // const formValues = form.getFieldsValue()
     }
 
     // 自定义密码校验
@@ -70,10 +80,11 @@ class Login extends Component {
                                     { min: 2, message: '用户名最少两位！'},
                                     { max: 10, message: '用户名最多十位！'},
                                     { pattern: /^[a-zA-Z0-9_]+$/, message: '用户名必须是英文、数字、下划线组成！'}
-                                ]
+                                ],
+                                initialValue: 'admin'   // 初始默认值
                             }) (
                                 <Input
-                                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                    prefix={<Icon type="user" />}
                                     placeholder="用户名"
                                 />
                             )
@@ -85,10 +96,11 @@ class Login extends Component {
                             getFieldDecorator ('password', {
                                 rules: [ 
                                     { validator: this.validatePwd }
-                                ]
+                                ],
+                                initialValue: '178250mei'
                             }) (
                                 <Input
-                                    prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                    prefix={<Icon type="lock" />}
                                     type="password"
                                     placeholder="密码"
                                 />
